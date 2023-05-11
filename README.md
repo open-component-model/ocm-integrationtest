@@ -1,6 +1,4 @@
-[![OCM Integration Tests](https://github.com/jensh007/testocm/actions/workflows/integrationtest.yaml/badge.svg?branch=main)](https://jensh007.github.io/testocm/report.html)
-
-[![REUSE status](https://api.reuse.software/badge/github.com/open-component-model/ocm-integrationtest)](https://api.reuse.software/info/github.com/open-component-model/ocm-integrationtest)
+[![OCM Integration Tests](https://github.com/open-component-model/ocm-integrationtest/actions/workflows/integrationtest.yaml/badge.svg?branch=main)](https://open-component-model.github.io/ocm-integrationtest/report.html)
 
 # Open-Component-Model Integration Test
 
@@ -25,6 +23,7 @@ This project uses Python 3.9+ to run the tests against the [OCM CLI](https://git
 * Set environment variables: `export FDQN_NAME=<Your fully qualified host-name>:4430; export USER_NAME=ocmuser; export PASSWD=<my-secret-password>`
 * If you user alternative container runtimes to docker (like e.g. colima) you may need to set DOCKER_HOST env var. e.g.: `export DOCKER_HOST=unix:///Users/<my-user>/.colima/default/docker.sock`
 * Run local OCI registry in docker: `./start_docker.sh`
+* Build local test binaries: `./build.sh`
 * Run tests: `pytest tests`
 * Stop and remove container: `./stop_docker.sh`
 
@@ -40,3 +39,13 @@ We as members, contributors, and leaders pledge to make participation in our com
 
 Copyright 2022-2023 SAP SE or an SAP affiliate company and open-component-model contributors. Please see our [LICENSE](LICENSE) for copyright and license information. Detailed information including third-party components and their licensing/copyright information is available [via the REUSE tool](https://api.reuse.software/info/github.com/open-component-model/ocm-integrationtest).
 
+## Test Report
+
+[Latest Test Report](https://open-component-model.github.io/ocm-integrationtest/report.html)
+
+## Statistics
+
+Statistics of the last test runs:
+
+Date + Time | Result
+------------|--------
