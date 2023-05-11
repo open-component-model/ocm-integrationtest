@@ -48,4 +48,4 @@ Copyright 2022-2023 SAP SE or an SAP affiliate company and open-component-model 
 Statistics of the last test runs:
 
 Date + Time | Result
-------------|--------
+------------|--------2023-05-11 13:23:21+0000 | passed
