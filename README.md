@@ -47,6 +47,7 @@ Copyright 2022-2023 SAP SE or an SAP affiliate company and open-component-model 
 
 Statistics of the last test runs:
 
-Date + Time | Result
-------------|--------2023-05-11 13:23:21+0000 | passed
-2023-05-12 02:18:54+0000 | passed
+Date + Time | OCM Version | Result
+------------|-------------|--------
+2023-05-11 13:23:21+0000 | ocm version 0.3.0-rc.2 | &#9989; (passed)
+2023-05-12 02:18:54+0000 | ocm version 0.3.0-rc.2 | &#9989; (passed)
