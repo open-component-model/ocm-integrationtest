@@ -45,7 +45,7 @@ Copyright 2022-2023 SAP SE or an SAP affiliate company and open-component-model 
 
 ## Statistics
 
-Statistics of the last test runs:
+Statistics of the latest [test runs](https://github.com/open-component-model/ocm-integrationtest/actions/workflows/integrationtest.yaml):
 
 Date + Time | OCM Version | Result
 ------------|-------------|-------
