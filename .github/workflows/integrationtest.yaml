@@ -111,6 +111,9 @@ jobs:
         pytest ./tests
         res=$?
         now=$(date +"%Y-%m-%d %H:%M:%S%z")
+        echo "TEST_RUN_TS=${now}" >> $GITHUB_ENV
+        echo "TEST_RESULT=${res}" >> $GITHUB_ENV
+        echo "OCM_VERSION=${ocm_ver}" >> $GITHUB_ENV
         if [ ${res} -eq  0 ]; then
           echo "Tests run successfully."
           echo "$now | ${ocm_ver} | &#9989; (passed)" >> README.md
@@ -135,3 +138,62 @@ jobs:
         files: README.md docs/
         name: github-ation
         email: noreply@github.com
+    - name: Post to a Slack channel
+      id: slack
+      uses: slackapi/slack-github-action@v1.23.0
+      if: always()
+      with:
+        # Slack channel id, channel name, or user id to post message.
+        # See also: https://api.slack.com/methods/chat.postMessage#channels
+        # You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
+        channel-id: 'C03NF7KH128'
+        # For posting a simple plain text message
+        payload: |
+          {
+            "text" : "OCM Integration Test Report, Status: ${{ job.status }}",
+            "blocks": [
+              {
+                "type": "header",
+                "text": {
+                  "type": "plain_text",
+                  "text": "OCM Integration Test Report",
+                  "emoji": true
+                }
+              },
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Integration Test:*\nOCM CLI (${{ env.OCM_VERSION }})"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Status:*\n${{ job.status == 'success' && ':fiori-success:' || ':fiori-error:' }}"
+                  }
+                ]
+              },
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Time:*\n${{ env.TEST_RUN_TS }}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Action:*\n<https://github.com/open-component-model/ocm-integrationtest/actions/workflows/slack.yaml|Github Action>"
+                  }
+                ]
+              },
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "<https://open-component-model.github.io/ocm-integrationtest/report.html|TestReport>"
+                }
+              }
+            ]
+          }
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
