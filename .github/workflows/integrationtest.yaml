@@ -169,7 +169,7 @@ jobs:
                   },
                   {
                     "type": "mrkdwn",
-                    "text": "*Status:*\n${{ job.status == 'success' && ':fiori-success:' || ':fiori-error:' }}"
+                    "text": "*Status:*\n${{ job.status == 'success' && ':white-check_mark:' || ':x:' }}"
                   }
                 ]
               },
