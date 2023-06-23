@@ -169,7 +169,7 @@ jobs:
                   },
                   {
                     "type": "mrkdwn",
-                    "text": "*Status:*\n${{ job.status == 'success' && ':white-check_mark:' || ':x:' }}"
+                    "text": "*Status:*\n${{ job.status == 'success' && ':white_check_mark:' || ':x:' }}"
                   }
                 ]
               },
