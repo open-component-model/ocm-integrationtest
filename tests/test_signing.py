@@ -42,7 +42,7 @@ def test_sign_remote(ctx: OcmTestContext, setup: tuple[str, str]):
     td = TestData()
     cli = td.create_ctf()
     cli.ocm_repo = util.get_repo_url(ctx)
-    cli.push()
+    cli.push(force=True)
     cli.sign(signature_name, priv_key_path, remote=True)
     cli.verify(signature_name, pub_key_path, remote=True)
 
@@ -55,7 +55,7 @@ def test_sign_with_reference(ctx: OcmTestContext, setup: tuple[str, str]):
     logger.debug(td.component_yaml)
     cli = td.create_ctf()
     cli.ocm_repo = util.get_repo_url(ctx)
-    cli.push()
+    cli.push(force=True)
     cli.sign(signature_name, priv_key_path, recursive=True, remote=True)
     cli.verify(signature_name, pub_key_path, remote=True)
 

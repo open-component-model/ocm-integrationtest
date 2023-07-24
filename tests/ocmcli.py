@@ -127,7 +127,7 @@ class OcmApplication:
             cmd_line = f'add references {str(self.gen_ca_dir)} {comp_vers.reference_file}'
             execute_ocm(cmd_line)
 
-        cmd_line = f'transfer componentarchive {str(self.gen_ca_dir)} {str(self.gen_ctf_dir)}'
+        cmd_line = f'transfer componentarchive -f {str(self.gen_ca_dir)} {str(self.gen_ctf_dir)}'
         execute_ocm(cmd_line)
 
     def create_ctf_from_spec(
