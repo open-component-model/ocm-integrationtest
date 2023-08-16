@@ -151,10 +151,18 @@ jobs:
         files: README.md docs/
         name: github-ation
         email: noreply@github.com
+    - name: Generate token
+      id: generate_token
+      if: ${{ github.event.client_payload }}
+      uses: tibdex/github-app-token@v1
+      with:
+        app_id: ${{ secrets.OCMBOT_APP_ID }}
+        private_key: ${{ secrets.OCMBOT_PRIV_KEY }}
     - name: send test result as PR comment
+      if: ${{ github.event.client_payload }}
       uses: actions/github-script@v6
       with:
-        github-token: ${{ secrets.TRIGGER_EVENT }}
+        github-token: ${{ steps.generate_token.outputs.token }}
         script: |
           github.rest.issues.createComment({
             owner: 'open-component-model',
