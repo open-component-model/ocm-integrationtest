@@ -10,6 +10,8 @@ on:
         default: false
   schedule:
     - cron: '0 2 * * *'  # every day at 2AM
+  repository_dispatch:
+    types: [ocm_pr]
 env:
   REF: refs/remotes/origin/main
 permissions:
