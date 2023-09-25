@@ -41,6 +41,12 @@ jobs:
         repository: open-component-model/ocm
         ref: ${{ env.REF }}
         path: ocm
+    - name: get ocm commit
+      if: ${{ ! inputs. github.event.client_payload }}
+      run: |
+        SHA=`git -C ./ocm log -1 --format='%H'`
+        echo "Checked out ocm from commit: ${SHA}"
+        echo "SHA=${SHA}" >> $GITHUB_ENV
     - name: setup OCM
       uses: open-component-model/ocm-setup-action@main
       if: ${{ inputs.use-release }}
@@ -108,7 +114,7 @@ jobs:
           sleep 1
         done
         echo "$Registy container is ready"
-    - name: Pyhton add CA
+    - name: Python add CA
       run: |
         location=`python3 -c "import certifi; print(certifi.where());"`
         cat ${{ github.workspace}}/certs/ociregistry.crt >> location
@@ -130,6 +136,7 @@ jobs:
         echo "TEST_RUN_TS=${now}" >> $GITHUB_ENV
         echo "TEST_RESULT=${res}" >> $GITHUB_ENV
         echo "OCM_VERSION=${ocm_ver}" >> $GITHUB_ENV
+        mv docs/report.html  docs/report-${{ env.SHA }}.html
         if [ ${res} -eq  0 ]; then
           echo "Tests run successfully."
           echo "TEST_RESULT_STR=Success &#9989;" >> $GITHUB_ENV
@@ -147,12 +154,10 @@ jobs:
         docker container rm -v registry
     - name: push
       uses: github-actions-x/commit@v2.9
+      if: always() # push result also on failure
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        push-branch: 'main'
         commit-message: 'add test report'
-        force-add: 'true'
-        rebase: 'true'
         files: README.md docs/
         name: github-ation
         email: noreply@github.com
@@ -178,13 +183,14 @@ jobs:
     - name: Post to a Slack channel
       id: slack
       uses: slackapi/slack-github-action@v1.23.0
-      if: failure()
+      if: always()
+      # if: failure()
       with:
         # Slack channel id, channel name, or user id to post message.
         # See also: https://api.slack.com/methods/chat.postMessage#channels
         # You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
+        # Test-channel-id: 'C057KU48M7Y'
         channel-id: 'C03NF7KH128'
-        # For posting a simple plain text message
         payload: |
           {
             "text" : "OCM Integration Test Report, Status: ${{ job.status }}",
@@ -219,7 +225,7 @@ jobs:
                   },
                   {
                     "type": "mrkdwn",
-                    "text": "*Action:*\n<https://github.com/open-component-model/ocm-integrationtest/actions/workflows/slack.yaml|Github Action>"
+                    "text": "*Action:*\n<https://github.com/open-component-model/ocm-integrationtest/actions/runs/${{ github.run_id }}|Github Action>"
                   }
                 ]
               },
@@ -227,7 +233,7 @@ jobs:
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": "<https://open-component-model.github.io/ocm-integrationtest/report.html|TestReport>"
+                  "text": "<https://open-component-model.github.io/ocm-integrationtest/report-${{ env.SHA }}.html|TestReport>"
                 }
               }
             ]
