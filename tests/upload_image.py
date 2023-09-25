@@ -129,7 +129,7 @@ def get_oci_client() -> oc.Client:
 def main():
     client = get_oci_client()
     image_ref = 'eu.gcr.io/sap-cp-k8s-ocm-gcp-eu30-dev/dev/d058463/images/hello-arm64:0.1.0'
-    # image_ref = 'TDT7W57RPY.fritz.box:4430/hello-amd64:0.1.0'
+    # image_ref = '<host>:4430/hello-amd64:0.1.0'
     # upload_image(client, image_ref, style=oci_image.OciImageCreator.Style.DOCKER_STYLE)
 
     image_ref = 'eu.gcr.io/sap-cp-k8s-ocm-gcp-eu30-dev/dev/d058463/images/hello-multi:0.1.0'

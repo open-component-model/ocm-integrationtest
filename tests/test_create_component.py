@@ -143,13 +143,13 @@ def get_remote_cd(oci: OciFetcher):
 #   name: ocm.integrationtest/echo
 #   provider: ocm.integrationtest
 #   repositoryContexts:
-#   - baseUrl: TDT7W57RPY.fritz.box:4430
+#   - baseUrl: <host>:4430
 #     componentNameMapping: urlPath
 #     subPath: inttest
 #     type: OCIRegistry
 #   resources:
 #   - access:
-#       imageReference: TDT7W57RPY.fritz.box:4430/inttest/ocm.integrationtest/echo/echoserver:0.1.0
+#       imageReference: <host>:4430/inttest/ocm.integrationtest/echo/echoserver:0.1.0
 #       type: ociArtifact
 #     name: chart
 #     relation: local
@@ -208,20 +208,20 @@ def test_push_plain(ctx: OcmTestContext):
 #   name: ocm.integrationtest/echo
 #   provider: ocm.integrationtest
 #   repositoryContexts:
-#   - baseUrl: TDT7W57RPY.fritz.box:4430
+#   - baseUrl: <host>:4430
 #     componentNameMapping: urlPath
 #     subPath: inttest
 #     type: OCIRegistry
 #   resources:
 #   - access:
-#       imageReference: TDT7W57RPY.fritz.box:4430/inttest/ocm.integrationtest/echo/echoserver:0.1.0
+#       imageReference: <host>:4430/inttest/ocm.integrationtest/echo/echoserver:0.1.0
 #       type: ociArtifact
 #     name: chart
 #     relation: local
 #     type: helmChart
 #     version: 1.0.0
 #   - access:
-#       imageReference: TDT7W57RPY.fritz.box:4430/inttest/google_containers/echoserver:1.10
+#       imageReference: <host>:4430/inttest/google_containers/echoserver:1.10
 #       type: ociArtifact
 #     labels:
 #     - name: mylabel
