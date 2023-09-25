@@ -10,7 +10,7 @@ on:
         default: false
       pr_number:
         type: number
-        description: Number of PR to test against (without #, e.g.: 517)
+        description: "Number of PR to test (without #, e.g.: 517)"
         required: false
   schedule:
     - cron: '0 2 * * *'  # every day at 2AM
