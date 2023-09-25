@@ -1,0 +1,35 @@
+name: OCM PR Test
+# trigger manually
+run-name: OCM CLI Integration Tests
+on:
+  workflow_dispatch:
+    inputs:
+      pr-number:
+        type: number
+        description: Number of PR to test against
+#        default: false
+  repository_dispatch:
+    types: [ocm_pr]
+permissions:
+  contents: write
+env:
+  REF: main
+jobs:
+  test-ocm:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout inttest
+      uses: actions/checkout@v3
+    - name: get-pr
+      if: ${{ inputs.pr-number }}
+      run: |
+        echo "Input was: ${{ ${{ ! inputs.pr-number }} }}"
+        REF="refs/pull/${{ ! inputs.pr-number }/head"
+        echo "REF=${{ github.event.client_payload.ref }}" >> $GITHUB_ENV
+    - name: checkout ocm
+      uses: actions/checkout@v3
+      if: ${{ ! inputs.use-release }}
+      with:
+        repository: open-component-model/ocm
+        ref: ${{ env.REF }}
+        path: ocm
