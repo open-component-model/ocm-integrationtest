@@ -8,6 +8,10 @@ on:
         type: boolean
         description: use latest pre-built release instead of building from HEAD
         default: false
+      pr_number:
+        type: number
+        description: Number of PR to test against (without #, e.g.: 517)
+        required: false
   schedule:
     - cron: '0 2 * * *'  # every day at 2AM
   repository_dispatch:
@@ -29,6 +33,14 @@ jobs:
         echo "PR_NUMBER=${{ github.event.client_payload.pr }}" >> $GITHUB_ENV
         echo "SHA=${{ github.event.client_payload.sha }}" >> $GITHUB_ENV
         echo "REF=${{ github.event.client_payload.ref }}" >> $GITHUB_ENV
+    - name: get-pr
+      if:  ${{ inputs.pr_number }}
+      run: |
+        echo "get-pr"
+        echo "Input was: ${{ inputs.pr_number }}"
+        REF="refs/pull/${{ inputs.pr_number }}/head"
+        echo "Building OCM from a pull request: ${REF}"
+        echo "REF=${REF}" >> $GITHUB_ENV
     - name: debug env
       run: |
         echo "PR_NUMBER=${{ env.PR_NUMBER }}"
