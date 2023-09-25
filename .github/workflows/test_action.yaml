@@ -1,0 +1,21 @@
+name: OCM Test Action
+# trigger manually
+run-name: OCM CLI Integration Tests
+on:
+  workflow_dispatch:
+    inputs:
+      pr-number:
+        type: number
+        description: Number of PR to test against
+        required: false
+  repository_dispatch:
+permissions:
+  contents: write
+env:
+  REF: main
+jobs:
+  test_action:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout inttest
+      uses: actions/checkout@v3
