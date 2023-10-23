@@ -194,7 +194,7 @@ jobs:
             })
     - name: Post to a Slack channel
       id: slack
-      uses: slackapi/slack-github-action@v1.23.0
+      uses: slackapi/slack-github-action@v1.24.0
       if: ${{ github.ref_name  == 'main' && github.event_name == 'schedule' }}
       with:
         # Slack channel id, channel name, or user id to post message.
@@ -207,33 +207,12 @@ jobs:
             "text" : "OCM Integration Test Report, Status: ${{ job.status }}",
             "blocks": [
               {
-                "type": "header",
-                "text": {
-                  "type": "plain_text",
-                  "text": "OCM Integration Test Report",
-                  "emoji": true
-                }
-              },
-              {
                 "type": "section",
-                "fields": [
+                "text":
                   {
                     "type": "mrkdwn",
-                    "text": "OCM CLI"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "${{ job.status == 'success' && ':white_check_mark:' || ':x:' }}"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Action:*\n<https://github.com/open-component-model/ocm-integrationtest/actions/runs/${{ github.run_id }}|Github Action>"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "<https://open-component-model.github.io/ocm-integrationtest/report-${{ env.SHA }}.html|TestReport>"
+                    "text": "Testreport OCM CLI: ${{ job.status == 'success' && ':white_check_mark:' || ':x:' }}  <https://open-component-model.github.io/ocm-integrationtest/report-${{ env.SHA }}.html|TestReport>  <https://github.com/open-component-model/ocm-integrationtest/actions/runs/${{ github.run_id }}|Github Action>"
                   }
-                ]
               }
             ]
           }
