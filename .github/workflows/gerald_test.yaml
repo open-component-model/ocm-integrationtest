@@ -197,19 +197,11 @@ jobs:
             "text" : "OCM Integration Test Report, Status: ${{ job.status }}",
             "blocks": [
               {
-                "type": "header",
-                "text": {
-                  "type": "plain_text",
-                  "text": "OCM Integration Test Report",
-                  "emoji": true
-                }
-              },
-              {
                 "type": "section",
                 "fields": [
                   {
                     "type": "mrkdwn",
-                    "text": "OCM CLI"
+                    "text": "Testreport OCM CLI"
                   },
                   {
                     "type": "mrkdwn",
@@ -217,7 +209,7 @@ jobs:
                   },
                   {
                     "type": "mrkdwn",
-                    "text": "*Action:*\n<https://github.com/open-component-model/ocm-integrationtest/actions/runs/${{ github.run_id }}|Github Action>"
+                    "text": "<https://github.com/open-component-model/ocm-integrationtest/actions/runs/${{ github.run_id }}|Github Action>"
                   },
                   {
                     "type": "mrkdwn",
