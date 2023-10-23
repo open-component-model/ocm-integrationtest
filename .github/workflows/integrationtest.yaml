@@ -211,7 +211,7 @@ jobs:
                 "text":
                   {
                     "type": "mrkdwn",
-                    "text": "Integration Test for OCM CLI: ${{ job.status == 'success' && ':white_check_mark:' || ':x:' }}  <https://open-component-model.github.io/ocm-integrationtest/report-${{ env.SHA }}.html|TestReport>  <https://github.com/open-component-model/ocm-integrationtest/actions/runs/${{ github.run_id }}|Github Action>"
+                    "text": "Integration Test for OCM CLI ${{ job.status == 'success' && ':white_check_mark:' || ':x:' }}  <https://open-component-model.github.io/ocm-integrationtest/report-${{ env.SHA }}.html|TestReport>  <https://github.com/open-component-model/ocm-integrationtest/actions/runs/${{ github.run_id }}|Github Action>"
                   }
               }
             ]
