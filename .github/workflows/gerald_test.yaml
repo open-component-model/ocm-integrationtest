@@ -84,24 +84,11 @@ jobs:
             "blocks": [
               {
                 "type": "section",
-                "text": [
+                "text":
                   {
                     "type": "mrkdwn",
-                    "text": "Testreport OCM CLI: ${{ job.status == 'success' && ':white_check_mark:' || ':x:' }}  "
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "${{ job.status == 'success' && ':white_check_mark:' || ':x:' }}  "
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "<https://github.com/open-component-model/ocm-integrationtest/actions/runs/${{ github.run_id }}|Github Action>  "
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "<https://open-component-model.github.io/ocm-integrationtest/report-${{ env.SHA }}.html|TestReport>"
+                    "text": "Testreport OCM CLI: ${{ job.status == 'success' && ':white_check_mark:' || ':x:' }}  ${{ job.status == 'success' && ':white_check_mark:' || ':x:' }}  <https://github.com/open-component-model/ocm-integrationtest/actions/runs/${{ github.run_id }}|Github Action>  <https://open-component-model.github.io/ocm-integrationtest/report-${{ env.SHA }}.html|TestReport>"
                   }
-                ]
               }
             ]
           }
