@@ -219,33 +219,21 @@ jobs:
                 "fields": [
                   {
                     "type": "mrkdwn",
-                    "text": "*Integration Test:*\nOCM CLI (${{ env.OCM_VERSION }})"
+                    "text": "OCM CLI"
                   },
                   {
                     "type": "mrkdwn",
-                    "text": "*Status:*\n${{ job.status == 'success' && ':white_check_mark:' || ':x:' }}"
-                  }
-                ]
-              },
-              {
-                "type": "section",
-                "fields": [
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Time:*\n${{ env.TEST_RUN_TS }}"
+                    "text": "${{ job.status == 'success' && ':white_check_mark:' || ':x:' }}"
                   },
                   {
                     "type": "mrkdwn",
                     "text": "*Action:*\n<https://github.com/open-component-model/ocm-integrationtest/actions/runs/${{ github.run_id }}|Github Action>"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "<https://open-component-model.github.io/ocm-integrationtest/report-${{ env.SHA }}.html|TestReport>"
                   }
                 ]
-              },
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "<https://open-component-model.github.io/ocm-integrationtest/report-${{ env.SHA }}.html|TestReport>"
-                }
               }
             ]
           }
