@@ -164,17 +164,6 @@ jobs:
       run: |
         docker container stop registry
         docker container rm -v registry
-    - name: Dump GitHub context
-      if: always()
-      env:
-        GITHUB_CONTEXT: ${{ toJSON(github) }}
-      run: echo "$GITHUB_CONTEXT"
-    - name: echo vars
-      run: |
-        echo ${{ !github.event_name == 'schedule'}}
-        echo ${{ github.event_name }}
-        echo ${{ github.event.action}}
-        echo ${{ github.ref_name == 'main' && github.event_name != 'schedule' }}
     - name: push
       uses: github-actions-x/commit@v2.9
       if: always() # push result also on failure
