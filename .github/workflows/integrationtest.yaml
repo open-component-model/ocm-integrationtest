@@ -165,6 +165,7 @@ jobs:
         docker container stop registry
         docker container rm -v registry
     - name: Dump GitHub context
+      if: always()
       env:
         GITHUB_CONTEXT: ${{ toJSON(github) }}
       run: echo "$GITHUB_CONTEXT"
@@ -205,7 +206,7 @@ jobs:
     - name: Post to a Slack channel
       id: slack
       uses: slackapi/slack-github-action@v1.24.0
-      if: ${{ github.ref_name  == 'main' && github.event_name == 'schedule' }}
+      if: ${{ github.ref_name  == 'main' && github.event_name == 'schedule' && always()}}
       with:
         # Slack channel id, channel name, or user id to post message.
         # See also: https://api.slack.com/methods/chat.postMessage#channels
