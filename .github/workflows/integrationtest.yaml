@@ -34,8 +34,8 @@ jobs:
         echo "SHA=${{ github.event.client_payload.sha }}" >> $GITHUB_ENV
         echo "REF=${{ github.event.client_payload.ref }}" >> $GITHUB_ENV
     - name: get-pr
-      if:  ${{ inputs.pr_number }}
-      run: |
+      if:  ${{ inputs.pr_number!= '' }} 
+      run: | 
         echo "get-pr"
         echo "Input was: ${{ inputs.pr_number }}"
         REF="refs/pull/${{ inputs.pr_number }}/head"
@@ -54,7 +54,7 @@ jobs:
         ref: ${{ env.REF }}
         path: ocm
     - name: get ocm commit
-      if: ${{ ! inputs. github.event.client_payload }}
+      if: ${{ ! inputs.github.event.client_payload }}
       run: |
         SHA=`git -C ./ocm log -1 --format='%H'`
         echo "Checked out ocm from commit: ${SHA}"
