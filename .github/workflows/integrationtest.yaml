@@ -164,15 +164,6 @@ jobs:
       run: |
         docker container stop registry
         docker container rm -v registry
-    - name: push
-      uses: github-actions-x/commit@v2.9
-      if: always() # push result also on failure
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        commit-message: 'add test report'
-        files: README.md docs/
-        name: github-ation
-        email: noreply@github.com
     - name: Dump GitHub context
       env:
         GITHUB_CONTEXT: ${{ toJSON(github) }}
@@ -183,6 +174,15 @@ jobs:
         echo ${{ github.event_name }}
         echo ${{ github.event.action}}
         echo ${{ github.ref_name == 'main' && github.event_name != 'schedule' }}
+    - name: push
+      uses: github-actions-x/commit@v2.9
+      if: always() # push result also on failure
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: 'add test report'
+        files: README.md docs/
+        name: github-ation
+        email: noreply@github.com
     - name: Generate token
       id: generate_token
       if: ${{ github.event.client_payload }}
