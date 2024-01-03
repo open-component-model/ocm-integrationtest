@@ -192,6 +192,16 @@ jobs:
             issue_number: ${{ env.PR_NUMBER }},
             body: 'Integration Tests for ${{ env.SHA }} run with result: ${{ env.TEST_RESULT_STR }}!'
             })
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJSON(github) }}
+      run: echo "$GITHUB_CONTEXT"
+    - name: echo vars
+      run: |
+        echo ${{ !github.event_name == 'schedule'}}
+        echo ${{ github.event_name }}
+        echo ${{ github.event.action}}
+        echo ${{ github.ref_name == 'main' && github.event_name != 'schedule' }}
     - name: Post to a Slack channel
       id: slack
       uses: slackapi/slack-github-action@v1.24.0
