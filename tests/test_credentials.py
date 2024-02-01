@@ -10,7 +10,7 @@ import util
 
 pytestmark = pytest.mark.usefixtures("ocm_no_config")  # explicitely set no credentials to avoid auto fallback to docker confi
 def test_transfer_without_credentials(ctx: OcmTestContext):
-    with pytest.raises(ocm.OcmCliException, match='401 Unauthorized') as excinfo:
+    with pytest.raises(ocm.OcmCliException, match='authorization failed: no basic auth credentials') as excinfo:
         ocm.execute_ocm(f'transfer artifacts gcr.io/google-containers/pause:3.2 {ctx.repo_dir}/images/pause:3.2')
 
 
