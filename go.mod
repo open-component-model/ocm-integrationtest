@@ -1,3 +1,3 @@
-module github.com/jensh007/testocm
+module github.com/open-component-model/ocm-integrationtest
 
-go 1.20
+go 1.22
