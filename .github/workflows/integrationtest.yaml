@@ -148,7 +148,7 @@ jobs:
         echo "TEST_RUN_TS=${now}" >> $GITHUB_ENV
         echo "TEST_RESULT=${res}" >> $GITHUB_ENV
         echo "OCM_VERSION=${ocm_ver}" >> $GITHUB_ENV
-        mv docs/report.html  docs/report-${{ env.SHA }}.html
+        cp docs/report.html docs/report-${{ env.SHA }}.html
         if [ ${res} -eq  0 ]; then
           echo "Tests run successfully."
           echo "TEST_RESULT_STR=Success &#9989;" >> $GITHUB_ENV
