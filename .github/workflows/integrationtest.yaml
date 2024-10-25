@@ -13,7 +13,7 @@ on:
         description: "Number of PR to test (without #, e.g.: 517)"
         required: false
   schedule:
-    - cron: '0 6 * * *'  # 6 AM UTC everyday for default branch
+  - cron: '0 6 * * *' # 6 AM UTC everyday for default branch
   repository_dispatch:
     types: [ocm_pr]
 env:
@@ -42,18 +42,13 @@ jobs:
         echo "SHA=${{ github.event.client_payload.sha }}" >> $GITHUB_ENV
         echo "REF=${{ github.event.client_payload.ref }}" >> $GITHUB_ENV
     - name: get-pr
-      if:  ${{ inputs.pr_number!= '' }}
+      if: ${{ inputs.pr_number!= '' }}
       run: |
         echo "get-pr"
         echo "Input was: ${{ inputs.pr_number }}"
         REF="refs/pull/${{ inputs.pr_number }}/head"
         echo "Building OCM from a pull request: ${REF}"
         echo "REF=${REF}" >> $GITHUB_ENV
-    - name: debug env
-      run: |
-        echo "PR_NUMBER=${{ env.PR_NUMBER }}"
-        echo "SHA=${{ env.SHA }}"
-        echo "REF=${{ env.REF }}"
     - name: checkout ocm
       uses: actions/checkout@v4
       if: ${{ ! inputs.use-release }}
@@ -68,6 +63,11 @@ jobs:
         SHA=`git -C ./ocm log -1 --format='%H'`
         echo "Checked out ocm from commit: ${SHA}"
         echo "SHA=${SHA}" >> $GITHUB_ENV
+    - name: debug env
+      run: |
+        echo "PR_NUMBER=${{ env.PR_NUMBER }}"
+        echo "SHA=${{ env.SHA }}"
+        echo "REF=${{ env.REF }}"
     - name: setup OCM
       uses: open-component-model/ocm-setup-action@main
       if: ${{ inputs.use-release }}
