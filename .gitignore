@@ -133,3 +133,5 @@ certs*/
 local/
 _out/
 gen/
+/.project
+/.idea/
