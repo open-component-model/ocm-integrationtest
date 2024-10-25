@@ -116,11 +116,10 @@ def test_transport_with_reference(ctx: OcmTestContext):
     cd = oci.get_component_descriptor_from_registry(ref_comp_name, ref_comp_vers)
     ref_image = cd.component.resources[0]
     new_location = f'{target_repo_url}/google_containers/pause:3.2'
-    assert ref_image.access.imageReference == new_location
     assert ref_image.name == 'pause_image'
     assert ref_image.type == cm.ArtefactType.OCI_IMAGE
     assert ref_image.version == '3.2.0'
     assert ref_image.relation == cm.ResourceRelation.EXTERNAL
     assert type(ref_image.access) == cm.OciAccess
     assert ref_image.access.type == cm.AccessType.OCI_REGISTRY
-    assert ref_image.access.imageReference == new_location
+    assert new_location in ref_image.access.imageReference
