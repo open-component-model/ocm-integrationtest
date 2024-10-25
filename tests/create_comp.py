@@ -150,6 +150,7 @@ class TestData:
         assert chart.access.referenceName == f'{self.provider}/echo/echoserver:0.1.0'
 
     def verify_chart_remote(self, chart: cm.Resource, image_reference: str):
+        print(chart.access.imageReference)
         assert chart.name == 'chart'
         assert chart.type == cm.ArtefactType.HELM_CHART
         assert chart.relation == cm.ResourceRelation.LOCAL
@@ -157,7 +158,6 @@ class TestData:
         assert chart.access.type == cm.AccessType.OCI_REGISTRY
         assert type(chart.access) == cm.OciAccess
         assert chart.access.imageReference == image_reference
-        print(chart.access.imageReference)
 
     def verify_image(self, image: cm.Resource):
         assert image.name == 'image'
