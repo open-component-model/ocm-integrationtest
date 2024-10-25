@@ -157,6 +157,7 @@ class TestData:
         assert chart.access.type == cm.AccessType.OCI_REGISTRY
         assert type(chart.access) == cm.OciAccess
         assert chart.access.imageReference == image_reference
+        print(chart.access.imageReference)
 
     def verify_image(self, image: cm.Resource):
         assert image.name == 'image'
