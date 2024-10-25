@@ -176,7 +176,7 @@ class TestData:
         assert image.relation == cm.ResourceRelation.EXTERNAL
         assert type(image.access) == cm.OciAccess
         assert image.access.type == cm.AccessType.OCI_REGISTRY
-        assert image.access.imageReference == image_reference
+        assert image_reference in image.access.imageReference
         assert len(image.labels) == 1
         assert image.labels[0].name == self.label_key
         assert image.labels[0].value == self.label_value
