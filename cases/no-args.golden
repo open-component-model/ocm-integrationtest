@@ -1,7 +1,7 @@
 ocm — Open Component Model Command Line Client
 
 Synopsis:
-  ocm [<options>] <sub-command> ...
+  ocm [<options>] <sub-command> help
 
 Available Commands:
   add                  Add elements to a component repository or component version

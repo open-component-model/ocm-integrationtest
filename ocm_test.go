@@ -12,6 +12,8 @@ import (
 	"strings"
 	"testing"
 	"text/template"
+
+	"github.com/sergi/go-diff/diffmatchpatch"
 )
 
 var binaryName = "ocm"
@@ -111,7 +113,28 @@ func TestCliArgs(t *testing.T) {
 			expected := loadFixture(t, tt.fixture)
 
 			if !reflect.DeepEqual(actual, expected) {
-				t.Fatalf("actual = %s, expected = %s", actual, expected)
+				// t.Fatalf("actual = %s, expected = %s", actual, expected)
+				//diff.Diff("actual", []byte(actual), "expected", []byte(expected))
+				dmp := diffmatchpatch.New()
+				diffs := dmp.DiffMain(actual, expected, true)
+				//fmt.Println(dmp.DiffPrettyText(diff))
+				var newDiffs []diffmatchpatch.Diff
+				for i, item := range diffs {
+					if item.Type != diffmatchpatch.DiffEqual {
+						if i-1 >= 0 && diffs[i-1].Type == diffmatchpatch.DiffEqual {
+							newDiffs = append(newDiffs, diffs[i-1])
+						}
+						newDiffs = append(newDiffs, item)
+						if i+1 <= len(diffs) && diffs[i+1].Type == diffmatchpatch.DiffEqual {
+							newDiffs = append(newDiffs, diffs[i+1])
+						}
+					}
+				}
+
+				fmt.Printf("len(diff) = %v", len(diffs))
+				fmt.Printf("len(newDiffs) = %v", len(newDiffs))
+				//t.Errorf("diff = %s", dmp.DiffToDelta(diffs))
+				t.Errorf("diff = %s", dmp.DiffPrettyText(newDiffs))
 			}
 		})
 	}
