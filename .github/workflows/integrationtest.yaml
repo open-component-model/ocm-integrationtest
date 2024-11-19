@@ -17,9 +17,6 @@ on:
   # runs regularly on main
   schedule:
     - cron: '0 6 * * *' # 6 AM UTC everyday for default branch
-  # runs on PRs via repository_dispatch, DEPRECATED, will be removed after workflow_call takes over
-  repository_dispatch:
-    types: [ ocm_pr ]
   # runs on PRs via workflow_call directly from within open-component-model/ocm
   workflow_call:
     secrets:
