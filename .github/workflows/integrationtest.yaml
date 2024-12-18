@@ -25,6 +25,11 @@ on:
         OCMBOT_PRIV_KEY:
           required: true
     inputs:
+      repo:
+        description: "The repo to checkout, can be used to reference other repositories"
+        required: false
+        default: 'open-component-model/ocm'
+        type: string
       ref:
         description: "The ref to checkout for OCM"
         required: true
@@ -32,6 +37,7 @@ on:
         type: string
 
 env:
+  REPO: ${{ inputs.repo }}
   REF: main
   REF_FROM_OTHER_WORKFLOW: ${{ inputs.ref != '' }}
 permissions:
@@ -76,7 +82,7 @@ jobs:
         uses: actions/checkout@v4
         if: ${{ ! inputs.use-release }}
         with:
-          repository: open-component-model/ocm
+          repository: ${{ env.REPO }}
           ref: ${{ env.REF }}
           path: ocm
           token: ${{ steps.generate_token.outputs.token }}
