@@ -1,5 +1,4 @@
 import logging
-from http.client import HTTPConnection
 
 import gci.componentmodel as cm
 import pytest
@@ -21,12 +20,6 @@ provider = TestData.provider
 ref_comp_name = TestData.ref_comp_name
 ref_comp_vers = TestData.ref_comp_vers
 
-HTTPConnection.debuglevel = 1
-logging.basicConfig()
-logging.getLogger().setLevel(logging.DEBUG)
-requests_log = logging.getLogger("requests.packages.urllib3")
-requests_log.setLevel(logging.DEBUG)
-requests_log.propagate = True
 
 def create_child_component(repo_url: str) -> ocm.OcmApplication:
     td = TestData()
