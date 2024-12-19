@@ -10,22 +10,45 @@ This repository runs the OCM integration tests. It installs a local OCI registry
 
 This project uses Python 3.9+ to run the tests against the [OCM CLI](https://github.com/open-component-model/ocm). It is targeted to be executed in a Github action workflow. You can also run the tests locally:
 
-* Install Python 3.9+
+* Install Python 3.9+ `sudo apt install -y python3 python3.10-venv`
 * Create a virtual environment, e.g `python -m venv <path-to-your-env>/ocmtest`
 * Install pip: `python -m pip install --upgrade pip`
-* Activate environment: `. <path-to-your-env>/ocmtest/bin/activate`
+* Activate environment: `. <path-to-your-env>/ocmtest/bin/activate` (on Windows: `. <path-to-your-env>\ocmtest\Scripts\Activate.ps1`) -- . D:\pip\ocm-integrationtest\Scripts\Activate.ps1
 * Install requirements: `pip install -r requirements.txt`
 * Install docker
-* Install htpasswd
-* Install [crane](https://github.com/google/go-containerregistry/blob/main/cmd/crane/doc/crane.md)
+* Install htpasswd - `sudo apt -y install apache2-utils`
+* Install [crane](https://github.com/google/go-containerregistry/blob/main/cmd/crane/doc/crane.md) - `go install github.com/google/go-containerregistry/cmd/crane@latest`
 * Create SSL certificates and store them in `./certs` directory (see `create-cert.sh` for instructions [Link](create-cert.sh) (be sure to have a hostname with a fully qualified domain name)
 * Create a user for the OCI registry and passwd file: `htpasswd -b -v certs/htpasswd ocmuser <my-secret-password>`
 * Set environment variables: `export FDQN_NAME=<Your fully qualified host-name>:4430; export USER_NAME=ocmuser; export PASSWD=<my-secret-password>`
-* If you user alternative container runtimes to docker (like e.g. colima) you may need to set DOCKER_HOST env var. e.g.: `export DOCKER_HOST=unix:///Users/<my-user>/.colima/default/docker.sock`
+* If you use alternative container runtimes to docker (like e.g. colima) you may need to set DOCKER_HOST env var. e.g.: `export DOCKER_HOST=unix:///Users/<my-user>/.colima/default/docker.sock`
 * Run local OCI registry in docker: `./start_docker.sh`
 * Build local test binaries: `./build.sh`
 * Run tests: `pytest tests`
 * Stop and remove container: `./stop_docker.sh`
+
+```bash
+sudo apt -y install apache2-utils python3 python3.10-venv
+go install github.com/google/go-containerregistry/cmd/crane@latest
+python3 -m venv /mnt/d/pip/ocm-integrationtest/
+python3 -m pip install --upgrade pip
+. /mnt/d/pip/ocm-integrationtest/bin/activate
+pip install -r requirements.txt
+# start here
+cd /mnt/d/git/ocm/ocm-integrationtest/
+. /mnt/d/pip/ocm-integrationtest/bin/activate
+mkdir -p
+export FDQN_NAME=`hostname --fqdn`:4430
+
+htpasswd -b -c certs/htpasswd ocmuser ocmpass
+htpasswd -b -v certs/htpasswd ocmuser ocmpass
+```
+
+```powershell
+cd D:\git\ocm\ocm-integrationtest\
+. D:\pip\ocm-integrationtest\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
 
 ## Support, Feedback, Contributing
 
