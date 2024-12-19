@@ -28,7 +28,7 @@ on:
       repo:
         description: "The repo to checkout, can be used to reference other repositories"
         required: false
-        default: 'open-component-model/ocm'
+        default: ''
         type: string
       ref:
         description: "The ref to checkout for OCM"
@@ -37,7 +37,7 @@ on:
         type: string
 
 env:
-  REPO: ${{ inputs.repo }}
+  REPO: ${{ inputs.repo != '' && inputs.repo || 'open-component-model/ocm'}}
   REF: main
   REF_FROM_OTHER_WORKFLOW: ${{ inputs.ref != '' }}
 permissions:
