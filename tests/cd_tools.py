@@ -1,5 +1,5 @@
 # Module with helper classes for component-descriptors
-
+import time
 from dataclasses import dataclass
 import io
 import json
@@ -36,6 +36,7 @@ class OciFetcher:
         self.client = oc.Client(
             credentials_lookup=self._credentials_lookup,
             routes=routes,
+            disable_tls_validation=True,
         )
 
 
@@ -52,13 +53,15 @@ class OciFetcher:
             'component-descriptors',
             f'{component_name}:{component_version}',
         ])
-        print(f'Retrieving component-descriptor from {cd_url}')
+        start = time.time()
+        print(f'Retrieving component-descriptor from {cd_url} at {start}')
 
         manifest = self.client.manifest(
             image_reference=cd_url,
             absent_ok=False,
         )
 
+        print(f'loading json from {cd_url} with digest {manifest.config.digest}')
         # Note original code catches exception and has some fallback
         cfg_dict = json.loads(
             self.client.blob(
@@ -77,11 +80,13 @@ class OciFetcher:
             print(f'Warning: Unexpected {layer_mimetype} MIME-type, expected one of '
                 f'{gci.oci.component_descriptor_mimetypes}')
 
+        print(f'retrieving blob for descriptor from ${cd_url} with digest')
         blob_res = self.client.blob(
             image_reference=cd_url,
             digest=layer_digest,
             stream=False, # manifests are typically small - do not bother w/ streaming
         )
+        print(f'reading blob io ${cd_url}')
         # wrap in fobj
         blob_fobj = io.BytesIO(blob_res.content)
         if as_yaml:
@@ -93,6 +98,7 @@ class OciFetcher:
             component_descriptor = gci.oci.component_descriptor_from_tarfileobj(
                 fileobj=blob_fobj,
             )
+        print(f'fetched and decoded descriptor blob ${cd_url} in {time.time() - start} seconds')
         return component_descriptor
 
 
