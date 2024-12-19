@@ -35,10 +35,10 @@ def ocm_config(ctx):
     test_config = f'''\
 type: generic.config.ocm.software/v1
 configurations:
-  - type: logging.config.ocm.software
-    contextType: attributes.context.ocm.software
-    settings:
-      defaultLevel: Trace
+  # - type: logging.config.ocm.software
+  #   contextType: attributes.context.ocm.software
+  #   settings:
+  #     defaultLevel: Trace
   - type: credentials.config.ocm.software
     consumers:
       - identity:
