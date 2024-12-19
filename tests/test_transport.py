@@ -96,7 +96,7 @@ def test_transport_by_value(ctx: OcmTestContext):
     oci = do_transport_and_get_cd(ctx, target_repo_url, True, False)
     # check that referenced component was not transferred
     cd_yaml = oci.get_component_descriptor_from_registry(comp_name, comp_vers, as_yaml=True)
-    with pytest.raises(om.OciImageNotFoundException, match='404') as excinfo:
+    with pytest.raises(ocm.OcmCliException, match='invalid component version reference') as excinfo:
       oci.get_component_descriptor_from_registry(ref_comp_name, ref_comp_vers)
 
 

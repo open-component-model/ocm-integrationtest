@@ -1,16 +1,13 @@
 # Module with helper classes for component-descriptors
-import time
 from dataclasses import dataclass
-import io
-import json
-import tarfile
-
-import dacite
 
 import gci.componentmodel as cm
 import gci.oci
 import oci.auth as oa
 import oci.client as oc
+import yaml
+
+import ocmcli as ocm
 
 
 @dataclass(frozen=True)
@@ -46,60 +43,26 @@ class OciFetcher:
         component_version: str,
         as_yaml: bool = False,
     ) -> cm.ComponentDescriptor | str:
+        cd = ocm.execute_ocm(f'get component {self.ctx_repo.baseUrl}//{component_name}:{component_version} -oyaml')
 
-        component_name = self._normalise_component_name(component_name)
-        cd_url = '/'.join([
-            self.ctx_repo.baseUrl,
-            'component-descriptors',
-            f'{component_name}:{component_version}',
-        ])
-        start = time.time()
-        print(f'Retrieving component-descriptor from {cd_url} at {start}')
-
-        manifest = self.client.manifest(
-            image_reference=cd_url,
-            absent_ok=False,
-        )
-
-        print(f'loading json from {cd_url} with digest {manifest.config.digest}')
-        # Note original code catches exception and has some fallback
-        cfg_dict = json.loads(
-            self.client.blob(
-                image_reference=cd_url,
-                digest=manifest.config.digest,
-            ).text
-        )
-        cfg = dacite.from_dict(
-            data_class=gci.oci.ComponentDescriptorOciCfg,
-            data=cfg_dict,
-        )
-        layer_digest = cfg.componentDescriptorLayer.digest
-        layer_mimetype = cfg.componentDescriptorLayer.mediaType
-
-        if not layer_mimetype in gci.oci.component_descriptor_mimetypes:
-            print(f'Warning: Unexpected {layer_mimetype} MIME-type, expected one of '
-                f'{gci.oci.component_descriptor_mimetypes}')
-
-        print(f'retrieving blob for descriptor from ${cd_url} with digest')
-        blob_res = self.client.blob(
-            image_reference=cd_url,
-            digest=layer_digest,
-            stream=False, # manifests are typically small - do not bother w/ streaming
-        )
-        print(f'reading blob io ${cd_url}')
-        # wrap in fobj
-        blob_fobj = io.BytesIO(blob_res.content)
-        if as_yaml:
-            with tarfile.open(fileobj=blob_fobj, mode='r') as tf:
-                component_descriptor_info = tf.getmember(gci.oci.component_descriptor_fname)
-                component_descriptor = tf.extractfile(component_descriptor_info).read()
-                component_descriptor = component_descriptor.decode()
+        # Find the marker and process the content after it
+        out = cd.stdout.decode("utf-8")
+        marker = '---'
+        if marker in out:
+            processed_content = out.split(marker, 1)[1].strip()
         else:
-            component_descriptor = gci.oci.component_descriptor_from_tarfileobj(
-                fileobj=blob_fobj,
-            )
-        print(f'fetched and decoded descriptor blob ${cd_url} in {time.time() - start} seconds')
-        return component_descriptor
+            processed_content = ""
+
+        docs = yaml.load_all(processed_content, yaml.SafeLoader)
+        for doc in docs:
+            if len(doc) == 0 or not doc['meta']:
+                continue
+            if doc is None:
+                raise ValueError('Component Descriptor appears to be empty')
+            print(f'Found component descriptor: {doc}')
+            if as_yaml:
+                return doc
+            return gci.componentmodel.ComponentDescriptor.from_dict(doc)
 
 
     def get_component_descriptors_from_registry(
