@@ -243,27 +243,39 @@ def test_push_plain(ctx: OcmTestContext):
 #   schemaVersion: v2
 
 def test_push_by_value(ctx: OcmTestContext):
+    print('test_push_by_value')
     repo_url = util.get_repo_url(ctx)
+    print(f'{repo_url=}')
     cli = get_push_cli(repo_url)
+    print(f'got push cli')
     cli.push(force=True, by_value=True, )
+    print(f'pushed by value')
 
     # check that contained artifacts are uploaded:
     oci = util.get_oci_client(ctx, repo_url)
+    print(f'got oci client')
     cd = get_remote_cd(oci)
 
     chart_reference=f'{repo_url}/{provider}/echo/echoserver:0.1.0'
     image_reference=f'{repo_url}/google_containers/echoserver:1.10'
 
+    print(f'get test data')
     td = TestData()
+    print(f'verifying root elems')
     td.verify_root_elems(cd)
     chart = cd.component.resources[0]
+    print(f'verifying chart remote 0')
     td.verify_chart_remote(chart, image_reference=chart_reference)
     image = cd.component.resources[1]
+    print(f'verifying chart remote 1')
     td.verify_image_remote(image,image_reference=image_reference)
     assert len(cd.component.sources) == 1
     source = cd.component.sources[0]
+    print(f'verifying source')
     td.verify_source(source)
 
+    print(f'verifying chart reference')
     # check that contained artifacts are uploaded:
     assert oci.exists(chart_reference)
+    print(f'verifying image reference')
     assert oci.exists(image_reference)
