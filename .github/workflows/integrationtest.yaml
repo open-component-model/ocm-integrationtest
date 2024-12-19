@@ -197,6 +197,16 @@ jobs:
             echo "$now | ${ocm_ver} | &#10060; (failed)" >> README.md
           fi
           exit ${res}
+      - name: Upload Report
+        # only upload the artifact if we are not on a PR
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          overwrite: true
+          retention-days: 7
+          name: test-report
+          path: docs/report.html
       - name: stop docker registry
         if: always()
         run: |
