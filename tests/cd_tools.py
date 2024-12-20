@@ -61,7 +61,6 @@ class OciFetcher:
             absent_ok=False,
         )
 
-        print(f'loading json from {cd_url} with digest {manifest.config.digest}')
         # Note original code catches exception and has some fallback
         cfg_dict = json.loads(
             self.client.blob(
@@ -80,13 +79,11 @@ class OciFetcher:
             print(f'Warning: Unexpected {layer_mimetype} MIME-type, expected one of '
                 f'{gci.oci.component_descriptor_mimetypes}')
 
-        print(f'retrieving blob for descriptor from ${cd_url} with digest')
         blob_res = self.client.blob(
             image_reference=cd_url,
             digest=layer_digest,
             stream=False, # manifests are typically small - do not bother w/ streaming
         )
-        print(f'reading blob io ${cd_url}')
         # wrap in fobj
         blob_fobj = io.BytesIO(blob_res.content)
         if as_yaml:
