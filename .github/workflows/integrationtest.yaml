@@ -44,7 +44,7 @@ permissions:
   contents: write
 jobs:
   test-ocm:
-    runs-on: ubuntu-latest
+    runs-on: large_runner
     steps:
       - name: Generate token
         id: generate_token
@@ -143,7 +143,7 @@ jobs:
             -e REGISTRY_HTTP_ADDR=:443 \
             -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/ociregistry.crt \
             -e REGISTRY_HTTP_TLS_KEY=/certs/ociregistry.key \
-            registry:2.8.1
+            registry:2.8.3
       - name: Install Crane
         uses: imjasonh/setup-crane@v0.4
       - name: Build OCM
@@ -156,7 +156,7 @@ jobs:
           env GOOS=linux GOARCH=arm64 GO111MODULE=on go build -o local/hello.arm64 -ldflags '-extldflags "-static"' main.go
           env GOOS=linux GOARCH=amd64 GO111MODULE=on go build -o local/hello.amd64 -ldflags '-extldflags "-static"' main.go
       - name: Wait for OCI registry to become ready
-        timeout-minutes: 1
+        timeout-minutes: 3
         run: |
           while ! curl https://${{ env.FDQN_NAME }}/v2
           do
