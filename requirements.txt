@@ -17,9 +17,9 @@ dockerfile-parse==2.0.1
 docutils==0.21.2
 ensure==1.0.4
 flake8==7.3.0
-gardener-cicd-libs==1.2680.0
+gardener-cicd-libs==1.2666.0
 gardener-component-model==0.0.98
-gardener-oci==1.2680.0
+gardener-oci==1.2666.0
 gardener-ocm==1.2680.0
 gitdb==4.0.12
 github3.py==4.0.1
