@@ -124,6 +124,7 @@ def get_oci_client() -> oc.Client:
     return oc.Client(
         credentials_lookup=_credentials_lookup,
         routes=oc.OciRoutes(oc.base_api_url),
+        disable_tls_validation=True,
     )
 
 def main():
