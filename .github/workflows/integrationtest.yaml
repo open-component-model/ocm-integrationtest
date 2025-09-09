@@ -103,7 +103,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version-file: '${{ github.workspace }}/ocm/ocm/go.mod'
+          go-version-file: '${{ github.workspace }}/ocm/go.mod'
       - name: create-cert
         run: |
           FDQN_NAME=`hostname --fqdn`
