@@ -6,4 +6,4 @@ pyyaml
 requests
 semver
 dacite
-urllib3==2.6.2
+urllib3==2.6.3
