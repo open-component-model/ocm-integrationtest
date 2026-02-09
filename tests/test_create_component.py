@@ -156,7 +156,7 @@ def get_remote_cd(oci: OciFetcher):
 #     type: helmChart
 #     version: 1.0.0
 #   - access:
-#       imageReference: docker.io/gcrcontainer/echoserver:1.10
+#       imageReference: registry.k8s.io/echoserver:1.10
 #       type: ociArtifact
 #     labels:
 #     - name: mylabel

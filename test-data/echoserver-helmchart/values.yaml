@@ -5,9 +5,9 @@
 replicaCount: 1
 
 image:
-  repository: docker.io/gcrcontainer/echoserver
+  repository: registry.k8s.io/echoserver
   pullPolicy: IfNotPresent
-  tag: "1.10"
+  tag: "1.0"
 
 imagePullSecrets: []
 nameOverride: ""
