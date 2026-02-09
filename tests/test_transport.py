@@ -61,10 +61,10 @@ def do_transport_and_get_cd(ctx: OcmTestContext, target_repo_url: str, by_value:
     assert cd
     # check that image references are adjusted to target location
     if by_value:
-      image_reference = f'{target_repo_url}/google_containers/echoserver:1.10'
+      image_reference = f'{target_repo_url}/echoserver:1.10'
       chart_reference=f'{target_repo_url}/{provider}/echo/echoserver:0.1.0'
     else:
-      image_reference = f'{repo_url}/google_containers/echoserver:1.10'
+      image_reference = f'{repo_url}/echoserver:1.10'
       chart_reference=f'{repo_url}/{provider}/echo/echoserver:0.1.0'
 
     td = TestData()
@@ -115,7 +115,7 @@ def test_transport_with_reference(ctx: OcmTestContext):
     assert ref.version == ref_comp_vers
     cd = oci.get_component_descriptor_from_registry(ref_comp_name, ref_comp_vers)
     ref_image = cd.component.resources[0]
-    new_location = f'{target_repo_url}/google_containers/pause:3.2'
+    new_location = f'{target_repo_url}/pause:3.2'
     assert ref_image.name == 'pause_image'
     assert ref_image.type == cm.ArtefactType.OCI_IMAGE
     assert ref_image.version == '3.2.0'

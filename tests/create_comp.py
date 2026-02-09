@@ -20,8 +20,8 @@ class TestData:
     comp_name = f'{provider}/{image_name}'
     label_key = 'mylabel'
     label_value = 'Hello Label'
-    echo_image_reference = 'gcr.io/google_containers/echoserver:1.10'
-    pause_image_reference = 'gcr.io/google_containers/pause:3.2'
+    echo_image_reference = 'registry.k8s.io/echoserver:1.10'
+    pause_image_reference = 'registry.k8s.io/pause:3.2'
 
     repo_url = 'github.com/open-component-model/ocm'
     commit_id = 'e39625d6e919d33267da4778a1842670ce2bbf77'
