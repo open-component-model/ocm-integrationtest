@@ -252,7 +252,7 @@ def test_push_by_value(ctx: OcmTestContext):
     cd = get_remote_cd(oci)
 
     chart_reference=f'{repo_url}/{provider}/echo/echoserver:0.1.0'
-    image_reference=f'{repo_url}/google_containers/echoserver:1.10'
+    image_reference=f'{repo_url}/echoserver:1.10'
 
     td = TestData()
     td.verify_root_elems(cd)
