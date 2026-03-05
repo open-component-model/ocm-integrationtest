@@ -84,3 +84,7 @@ Date + Time | OCM Version | Result
 2024-11-18 06:12:20+0000 | ocm version 0.19.0-dev+bb7c5f7639d35c2ab3b718571f80445a9a7fc3ca | &#9989; (passed)
 2024-11-18 08:23:28+0000 | ocm version 0.19.0-dev+edadfe3417cf61e376183b58ccb6e29bd2a5ff11 | &#9989; (passed)
 2024-11-18 08:38:55+0000 | ocm version 0.19.0-dev+74be7054fe6037a7ee6bb8b2a48486e03f26cee9 | &#9989; (passed)
+
+---
+
+<p align="center"><img alt="Bundesministerium für Wirtschaft und Energie (BMWE)-EU funding logo" src="https://apeirora.eu/assets/img/BMWK-EU.png" width="400"/></p>
