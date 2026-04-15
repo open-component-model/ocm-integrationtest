@@ -44,7 +44,7 @@ permissions:
   contents: write
 jobs:
   test-ocm:
-    runs-on: large_runner
+    runs-on: ubuntu-latest
     steps:
       - name: Generate token
         id: generate_token
