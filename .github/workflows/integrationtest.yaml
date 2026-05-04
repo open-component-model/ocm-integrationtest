@@ -61,7 +61,7 @@ jobs:
           token: ${{ steps.generate_token.outputs.token }}
           persist-credentials: false
       - name: get-pr
-        if: ${{ inputs.ref!= '' }}
+        if: ${{ inputs.ref != '' }}
         env:
           INPUT_REF: ${{ inputs.ref }}
         run: |
@@ -79,7 +79,7 @@ jobs:
           echo "SHA=${PAYLOAD_SHA}" >> $GITHUB_ENV
           echo "REF=${PAYLOAD_REF}" >> $GITHUB_ENV
       - name: get-pr
-        if: ${{ inputs.pr_number!= '' }}
+        if: ${{ inputs.pr_number != '' }}
         env:
           INPUT_PR_NUMBER: ${{ inputs.pr_number }}
         run: |
@@ -98,7 +98,7 @@ jobs:
           token: ${{ steps.generate_token.outputs.token }}
           persist-credentials: false
       - name: get ocm commit
-        if: ${{ ! inputs.github.event.client_payload }}
+        if: ${{ ! github.event.client_payload }}
         run: |
           SHA=`git -C ./ocm log -1 --format='%H'`
           echo "Checked out ocm from commit: ${SHA}"
@@ -178,7 +178,7 @@ jobs:
       - name: Python add CA
         run: |
           location=`python3 -c "import certifi; print(certifi.where());"`
-          cat ${{ github.workspace}}/certs/ociregistry.crt >> location
+          cat ${{ github.workspace}}/certs/ociregistry.crt >> "$location"
           python -c "import urllib.request; urllib.request.urlopen('https://${FDQN_NAME}')"
       - name: Install Python Libs
         run: |
