@@ -1,3 +1,3 @@
 module github.com/open-component-model/ocm-integrationtest
 
-go 1.23.2
+go 1.26.2
