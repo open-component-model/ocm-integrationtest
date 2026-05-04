@@ -85,7 +85,7 @@ jobs:
           path: ocm
           persist-credentials: false
       - name: get ocm commit
-        if: ${{ ! github.event.client_payload }}
+        if: ${{ ! inputs.use-release && ! github.event.client_payload }}
         run: |
           SHA=`git -C ./ocm log -1 --format='%H'`
           echo "Checked out ocm from commit: ${SHA}"
@@ -101,7 +101,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
         with:
-          go-version-file: '${{ github.workspace }}/ocm/go.mod'
+          go-version-file: '${{ github.workspace }}/${{ inputs.use-release && ''go.mod'' || ''ocm/go.mod'' }}'
       - name: create-cert
         run: |
           FDQN_NAME=`hostname --fqdn`
@@ -165,7 +165,7 @@ jobs:
       - name: Python add CA
         run: |
           location=`python3 -c "import certifi; print(certifi.where());"`
-          cat ${{ github.workspace}}/certs/ociregistry.crt >> "$location"
+          cat ${{ github.workspace}}/certs/ociregistry.crt | sudo tee -a "$location" > /dev/null
           python3 -c "import urllib.request; urllib.request.urlopen('https://${FDQN_NAME}')"
       - name: Install Python Libs
         run: |
