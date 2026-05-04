@@ -60,14 +60,14 @@ jobs:
           repository: open-component-model/ocm-integrationtest
           token: ${{ steps.generate_token.outputs.token }}
           persist-credentials: false
-      - name: get-pr
+      - name: get-pr (from ref)
         if: ${{ inputs.ref != '' }}
         env:
           INPUT_REF: ${{ inputs.ref }}
         run: |
           echo "Building OCM from a ref: ${INPUT_REF}"
           echo "REF=${INPUT_REF}" >> $GITHUB_ENV
-      - name: get-pr
+      - name: get-pr (from client_payload)
         if: ${{ github.event.client_payload }}
         env:
           PAYLOAD_PR: ${{ github.event.client_payload.pr }}
@@ -78,7 +78,7 @@ jobs:
           echo "PR_NUMBER=${PAYLOAD_PR}" >> $GITHUB_ENV
           echo "SHA=${PAYLOAD_SHA}" >> $GITHUB_ENV
           echo "REF=${PAYLOAD_REF}" >> $GITHUB_ENV
-      - name: get-pr
+      - name: get-pr (from pr_number)
         if: ${{ inputs.pr_number != '' }}
         env:
           INPUT_PR_NUMBER: ${{ inputs.pr_number }}
@@ -179,7 +179,7 @@ jobs:
         run: |
           location=`python3 -c "import certifi; print(certifi.where());"`
           cat ${{ github.workspace}}/certs/ociregistry.crt >> "$location"
-          python -c "import urllib.request; urllib.request.urlopen('https://${FDQN_NAME}')"
+          python3 -c "import urllib.request; urllib.request.urlopen('https://${FDQN_NAME}')"
       - name: Install Python Libs
         run: |
           python -m pip install --upgrade pip
