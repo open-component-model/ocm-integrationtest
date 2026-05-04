@@ -19,11 +19,6 @@ on:
     - cron: '0 6 * * *' # 6 AM UTC everyday for default branch
   # runs on PRs via workflow_call directly from within open-component-model/ocm
   workflow_call:
-    secrets:
-        OCMBOT_APP_ID:
-          required: true
-        OCMBOT_PRIV_KEY:
-          required: true
     inputs:
       repo:
         description: "The repo to checkout, can be used to reference other repositories"
@@ -47,18 +42,11 @@ jobs:
   test-ocm:
     runs-on: ubuntu-latest
     steps:
-      - name: Generate token
-        id: generate_token
-        uses: tibdex/github-app-token@3beb63f4bd073e61482598c45c71c1019b59b73a # v2
-        with: # OCMBot
-          app_id: ${{ secrets.OCMBOT_APP_ID }}
-          private_key: ${{ secrets.OCMBOT_PRIV_KEY }}
       - name: checkout inttest
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           # hard code repo because we want to reuse it across workflows
           repository: open-component-model/ocm-integrationtest
-          token: ${{ steps.generate_token.outputs.token }}
           persist-credentials: false
       - name: get-pr (from ref)
         if: ${{ inputs.ref != '' }}
@@ -95,7 +83,6 @@ jobs:
           repository: ${{ env.REPO }}
           ref: ${{ env.REF }}
           path: ocm
-          token: ${{ steps.generate_token.outputs.token }}
           persist-credentials: false
       - name: get ocm commit
         if: ${{ ! github.event.client_payload }}
