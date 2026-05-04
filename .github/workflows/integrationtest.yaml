@@ -49,44 +49,54 @@ jobs:
     steps:
       - name: Generate token
         id: generate_token
-        uses: tibdex/github-app-token@v2
+        uses: tibdex/github-app-token@3beb63f4bd073e61482598c45c71c1019b59b73a # v2
         with: # OCMBot
           app_id: ${{ secrets.OCMBOT_APP_ID }}
           private_key: ${{ secrets.OCMBOT_PRIV_KEY }}
       - name: checkout inttest
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           # hard code repo because we want to reuse it across workflows
           repository: open-component-model/ocm-integrationtest
           token: ${{ steps.generate_token.outputs.token }}
+          persist-credentials: false
       - name: get-pr
         if: ${{ inputs.ref!= '' }}
+        env:
+          INPUT_REF: ${{ inputs.ref }}
         run: |
-          echo "Building OCM from a ref: ${{ inputs.ref }}"
-          echo "REF=${{ inputs.ref }}" >> $GITHUB_ENV
+          echo "Building OCM from a ref: ${INPUT_REF}"
+          echo "REF=${INPUT_REF}" >> $GITHUB_ENV
       - name: get-pr
         if: ${{ github.event.client_payload }}
+        env:
+          PAYLOAD_PR: ${{ github.event.client_payload.pr }}
+          PAYLOAD_REF: ${{ github.event.client_payload.ref }}
+          PAYLOAD_SHA: ${{ github.event.client_payload.sha }}
         run: |
-          echo "PR was triggered with payload: pr: ${{ github.event.client_payload.pr }}, ref: ${{ github.event.client_payload.ref }}, sha: ${{ github.event.client_payload.sha }}"
-          echo "PR_NUMBER=${{ github.event.client_payload.pr }}" >> $GITHUB_ENV
-          echo "SHA=${{ github.event.client_payload.sha }}" >> $GITHUB_ENV
-          echo "REF=${{ github.event.client_payload.ref }}" >> $GITHUB_ENV
+          echo "PR was triggered with payload: pr: ${PAYLOAD_PR}, ref: ${PAYLOAD_REF}, sha: ${PAYLOAD_SHA}"
+          echo "PR_NUMBER=${PAYLOAD_PR}" >> $GITHUB_ENV
+          echo "SHA=${PAYLOAD_SHA}" >> $GITHUB_ENV
+          echo "REF=${PAYLOAD_REF}" >> $GITHUB_ENV
       - name: get-pr
         if: ${{ inputs.pr_number!= '' }}
+        env:
+          INPUT_PR_NUMBER: ${{ inputs.pr_number }}
         run: |
           echo "get-pr"
-          echo "Input was: ${{ inputs.pr_number }}"
-          REF="refs/pull/${{ inputs.pr_number }}/head"
+          echo "Input was: ${INPUT_PR_NUMBER}"
+          REF="refs/pull/${INPUT_PR_NUMBER}/head"
           echo "Building OCM from a pull request: ${REF}"
           echo "REF=${REF}" >> $GITHUB_ENV
       - name: checkout ocm
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         if: ${{ ! inputs.use-release }}
         with:
           repository: ${{ env.REPO }}
           ref: ${{ env.REF }}
           path: ocm
           token: ${{ steps.generate_token.outputs.token }}
+          persist-credentials: false
       - name: get ocm commit
         if: ${{ ! inputs.github.event.client_payload }}
         run: |
@@ -95,14 +105,14 @@ jobs:
           echo "SHA=${SHA}" >> $GITHUB_ENV
       - name: debug env
         run: |
-          echo "PR_NUMBER=${{ env.PR_NUMBER }}"
-          echo "SHA=${{ env.SHA }}"
-          echo "REF=${{ env.REF }}"
+          echo "PR_NUMBER=${PR_NUMBER}"
+          echo "SHA=${SHA}"
+          echo "REF=${REF}"
       - name: setup OCM
-        uses: open-component-model/ocm-setup-action@main
+        uses: open-component-model/ocm-setup-action@8c71929f38d3486e352e5d7aaf813f36accaaf43 # main
         if: ${{ inputs.use-release }}
       - name: Set up Go
-        uses: actions/setup-go@v6
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
         with:
           go-version-file: '${{ github.workspace }}/ocm/go.mod'
       - name: create-cert
@@ -146,7 +156,7 @@ jobs:
             -e REGISTRY_HTTP_TLS_KEY=/certs/ociregistry.key \
             registry:2.8.3
       - name: Install Crane
-        uses: imjasonh/setup-crane@v0.5
+        uses: imjasonh/setup-crane@6da1ae018866400525525ce74ff892880c099987 # v0.5
       - name: Build OCM
         if: ${{ ! inputs.use-release }}
         run: |
@@ -159,7 +169,7 @@ jobs:
       - name: Wait for OCI registry to become ready
         timeout-minutes: 3
         run: |
-          while ! curl https://${{ env.FDQN_NAME }}/v2
+          while ! curl "https://${FDQN_NAME}/v2"
           do
             echo "Waiting for container to become ready... still trying"
             sleep 1
@@ -169,7 +179,7 @@ jobs:
         run: |
           location=`python3 -c "import certifi; print(certifi.where());"`
           cat ${{ github.workspace}}/certs/ociregistry.crt >> location
-          python -c "import urllib.request; urllib.request.urlopen('https://${{ env.FDQN_NAME }}')"
+          python -c "import urllib.request; urllib.request.urlopen('https://${FDQN_NAME}')"
       - name: Install Python Libs
         run: |
           python -m pip install --upgrade pip
@@ -187,7 +197,6 @@ jobs:
           echo "TEST_RUN_TS=${now}" >> $GITHUB_ENV
           echo "TEST_RESULT=${res}" >> $GITHUB_ENV
           echo "OCM_VERSION=${ocm_ver}" >> $GITHUB_ENV
-          cp docs/report.html docs/report-${{ env.SHA }}.html
           if [ ${res} -eq  0 ]; then
             echo "Tests run successfully."
             echo "TEST_RESULT_STR=Success &#9989;" >> $GITHUB_ENV
@@ -221,7 +230,7 @@ jobs:
                   "text":
                     {
                       "type": "mrkdwn",
-                      "text": "Integration Test for OCM CLI ${{ job.status == 'success' && ':white_check_mark:' || ':x:' }}  <https://open-component-model.github.io/ocm-integrationtest/report-${{ env.SHA }}.html|TestReport>  <https://github.com/open-component-model/ocm-integrationtest/actions/runs/${{ github.run_id }}|Github Action>"
+                      "text": "Integration Test for OCM CLI ${{ job.status == 'success' && ':white_check_mark:' || ':x:' }}  <https://github.com/open-component-model/ocm-integrationtest/actions/runs/${{ github.run_id }}|Github Action>"
                     }
                 }
               ]
