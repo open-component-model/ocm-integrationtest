@@ -210,7 +210,7 @@ jobs:
           docker container rm -v registry
       - name: Post to a Slack channel
         id: slack
-        uses: slackapi/slack-github-action@03ea5433c137af7c0495bc0cad1af10403fc800c
+        uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c
         if: ${{ inputs.ref == '' && github.ref_name  == 'main' && github.event_name == 'schedule' && always()}}
         with:
           method: chat.postMessage
