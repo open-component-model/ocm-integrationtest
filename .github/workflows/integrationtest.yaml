@@ -16,12 +16,24 @@ on:
 
   push:
     branches: [main]
-    paths:
-      - '.github/workflows/integrationtest.yaml'
+    paths-ignore:
+      - '*.md'
+      - 'LICENSE'
+      - 'REUSE.toml'
+      - '.github/dependabot.yml'
+      - '.github/CODEOWNERS'
+      - '.github/release-drafter.yml'
+      - '.github/settings.yml'
   pull_request:
     branches: [main]
-    paths:
-      - '.github/workflows/integrationtest.yaml'
+    paths-ignore:
+      - '*.md'
+      - 'LICENSE'
+      - 'REUSE.toml'
+      - '.github/dependabot.yml'
+      - '.github/CODEOWNERS'
+      - '.github/release-drafter.yml'
+      - '.github/settings.yml'
 
   # runs regularly on main
   schedule:
