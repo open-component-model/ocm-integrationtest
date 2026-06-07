@@ -67,7 +67,7 @@ jobs:
       deployment: false
     steps:
       - name: checkout inttest
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           # hard code repo because we want to reuse it across workflows
           repository: open-component-model/ocm-integrationtest
@@ -101,7 +101,7 @@ jobs:
           echo "Building OCM from a pull request: ${REF}"
           echo "REF=${REF}" >> $GITHUB_ENV
       - name: checkout ocm
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         if: ${{ ! inputs.use-release }}
         with:
           repository: ${{ env.REPO }}
@@ -167,7 +167,7 @@ jobs:
             -e REGISTRY_HTTP_TLS_KEY=/certs/ociregistry.key \
             registry:2.8.3
       - name: Install Crane
-        uses: imjasonh/setup-crane@6da1ae018866400525525ce74ff892880c099987 # v0.5
+        uses: imjasonh/setup-crane@59c71e96a00b28651f10369ba3359a6d730740a0 # v0.6
       - name: Build OCM
         if: ${{ ! inputs.use-release }}
         run: |
