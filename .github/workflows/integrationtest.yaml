@@ -67,7 +67,7 @@ jobs:
       deployment: false
     steps:
       - name: checkout inttest
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           # hard code repo because we want to reuse it across workflows
           repository: open-component-model/ocm-integrationtest
@@ -101,7 +101,7 @@ jobs:
           echo "Building OCM from a pull request: ${REF}"
           echo "REF=${REF}" >> $GITHUB_ENV
       - name: checkout ocm
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         if: ${{ ! inputs.use-release }}
         with:
           repository: ${{ env.REPO }}
@@ -120,7 +120,7 @@ jobs:
           echo "SHA=${SHA}"
           echo "REF=${REF}"
       - name: setup OCM
-        uses: open-component-model/ocm-setup-action@8c71929f38d3486e352e5d7aaf813f36accaaf43 # main
+        uses: open-component-model/ocm-setup-action@5755dc5c01c939f7dbba3bb07f9fb9b019a7a2a0 # main
         if: ${{ inputs.use-release }}
       - name: Set up Go
         uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
