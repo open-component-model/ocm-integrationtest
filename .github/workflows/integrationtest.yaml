@@ -123,7 +123,7 @@ jobs:
         uses: open-component-model/ocm-setup-action@5755dc5c01c939f7dbba3bb07f9fb9b019a7a2a0 # main
         if: ${{ inputs.use-release }}
       - name: Set up Go
-        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
+        uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
         with:
           go-version-file: '${{ github.workspace }}/${{ inputs.use-release && ''go.mod'' || ''ocm/go.mod'' }}'
       - name: create-cert
@@ -167,7 +167,7 @@ jobs:
             -e REGISTRY_HTTP_TLS_KEY=/certs/ociregistry.key \
             registry:2.8.3
       - name: Install Crane
-        uses: imjasonh/setup-crane@59c71e96a00b28651f10369ba3359a6d730740a0 # v0.6
+        uses: imjasonh/setup-crane@feee3b6bb0d4c68370f256a4502498c9227e5c6b # v0.7
       - name: Build OCM
         if: ${{ ! inputs.use-release }}
         run: |
