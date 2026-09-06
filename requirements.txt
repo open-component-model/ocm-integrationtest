@@ -1,5 +1,5 @@
 gardener-component-model==0.0.98
-gardener-oci==1.2830.0
+gardener-oci==1.2842.0
 pytest
 pytest-html
 pyyaml
