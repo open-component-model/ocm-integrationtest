@@ -1,9 +1,9 @@
 gardener-component-model==0.0.98
-gardener-oci==1.2842.0
+gardener-oci==1.2847.0
 pytest
 pytest-html
 pyyaml
 requests
 semver
 dacite
-urllib3==2.7.0
+urllib3==2.8.0
