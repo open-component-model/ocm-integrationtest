@@ -120,7 +120,7 @@ jobs:
           echo "SHA=${SHA}"
           echo "REF=${REF}"
       - name: setup OCM
-        uses: open-component-model/ocm-setup-action@5755dc5c01c939f7dbba3bb07f9fb9b019a7a2a0 # main
+        uses: open-component-model/ocm-setup-action@5755dc5c01c939f7dbba3bb07f9fb9b019a7a2a0 # v1.1.0
         if: ${{ inputs.use-release }}
       - name: Set up Go
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
