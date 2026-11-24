@@ -152,6 +152,8 @@ jobs:
           USER_NAME=ocmuser
           htpasswd -Bbn ocmuser ${PASSWD} > auth/htpasswd
           htpasswd -b -v auth/htpasswd ${USER_NAME} ${PASSWD}
+          # mask the password in all following log output ('%' must be escaped in workflow commands)
+          echo "::add-mask::${PASSWD//%/%25}"
           echo "PASSWD=${PASSWD}" >> $GITHUB_ENV
           echo "USER_NAME=${USER_NAME}" >> $GITHUB_ENV
       - name: start OCI registry (docker)
@@ -202,8 +204,9 @@ jobs:
           fi
           ocm_ver=$(ocm --version)
           echo "OCM-Version: ${ocm_ver}"
-          pytest ./tests
-          res=$?
+          # the step shell runs with 'bash -e': capture the exit code instead of aborting here
+          res=0
+          pytest ./tests || res=$?
           now=$(date +"%Y-%m-%d %H:%M:%S%z")
           echo "TEST_RUN_TS=${now}" >> $GITHUB_ENV
           echo "TEST_RESULT=${res}" >> $GITHUB_ENV
@@ -230,7 +233,8 @@ jobs:
         with:
           method: chat.postMessage
           token: ${{ secrets.SLACK_BOT_TOKEN }}
-          channel-id: 'C03NF7KH128'
+          # fail the step if Slack rejects the message (e.g. bot not in channel) instead of silently succeeding
+          errors: true
           payload: |
             {
               "channel": "C03NF7KH128",
